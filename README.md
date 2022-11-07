@@ -126,6 +126,8 @@ protected.
 
 (7) How to create multiples threads using loop
 
+    The correct way to create threads is to create them all in one loop and in another loop join them together.
+
     int meals;
     pthread_mutex_t mutex;
 
@@ -148,6 +150,7 @@ protected.
         pthread_t th[4];
         meals = 0;
         pthread_mutex_init(&mutex, NULL);
+        
         for(int i = 0; i < 4; i++)
         {
             if (pthread_create(th + i, NULL, &ft_philo_routine, NULL))
@@ -164,4 +167,37 @@ protected.
         pthread_mutex_destroy(&mutex);
         return (0);
     }
+
+(8) How to get return values from threads
+
+    We can get the return values from functions executed in a threads passing the
+    reference of a pointer as the second argument in the function pthread_join:
+    (Address of the pointer)
+
+    Prototype:      int pthread_join(pthread_t thread, void **retval);
+    
+    void	*ft_routine()
+    {
+        int	my_value = 5;
+        int	*result = malloc(sizeof(int));
+        *result = my_value;
+        printf("Hello from thread, the value is %d\n", *result);
+        return ((void *)result);
+    }
+
+    int main(int argc, char const *argv[])
+    {
+        (void)argc;
+        (void)argv;
+        int	*res = NULL;
+        pthread_t th;
+        if (pthread_create(&th, NULL, &ft_routine, NULL))
+            return (1);
+        if (pthread_join(th, (void**)&res))
+            return (1);
+        printf("Value in main : %d\n", *res);
+        free(res);
+        return 0;
+    }
+
 

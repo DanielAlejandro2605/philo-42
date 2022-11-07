@@ -12,41 +12,24 @@
 
 #include "../includes/philo.h"
 
-int meals;
-pthread_mutex_t mutex;
+// static void	ft_dinner(t_env *env)
+// {
+// 	int	i;
 
-void	*ft_philo_routine()
-{
-	for (int i = 0; i < 1000000; i++){
-		pthread_mutex_lock(&mutex);
-		meals++;
-		pthread_mutex_unlock(&mutex);
-	}
-	return ((void *)0);
-}
+// 	i = 0;
+// 	while (i < env->amount_philos)
+// 	{
+
+// 	}
+// }
 
 int	main(int argc, char *argv[])
 {
 	t_env	env;
 	
-	(void)argc;
-	ft_init(&env, argv);
-	pthread_t th[4];
-	meals = 0;
-	pthread_mutex_init(&mutex, NULL);
-	for(int i = 0; i < 4; i++)
-	{
-		if (pthread_create(th + i, NULL, &ft_philo_routine, NULL))
-		return (1);
-		printf("Thread number %d starts\n", i);
-	}
-	for(int i = 0; i < 4; i++)
-	{
-		if(pthread_join(th[i], NULL))
-			return (1);
-		printf("Thread number %d finish\n", i);
-	}
-	printf("Meals : %d\n", meals);
-	pthread_mutex_destroy(&mutex);
-	return (0);
+	if (argc < 5 || argc > 6)
+		ft_error_args();
+	if(ft_init(&env, argv + 1))
+		ft_create_threads_error();
+	ft_free(&env);
 }

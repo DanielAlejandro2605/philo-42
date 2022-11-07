@@ -11,7 +11,7 @@ HEADERS_SRC				=	philo.h
 HEADERS_DIR				=	-I includes/
 HEADER					=	$(addprefix $(HEADERS_DIR), $(HEADERS_SRC))
 
-_PHILO_FILES			=	main.c init.c routine.c
+_PHILO_FILES			=	main.c init.c routine.c free.c error.c
 PHILO_SRC_DIR			=	./sources/
 PHILO_SRCS				=	$(addprefix $(PHILO_SRC_DIR), $(_PHILO_FILES))
 PHILO_OBJS				=	$(PHILO_SRCS:.c=.o)

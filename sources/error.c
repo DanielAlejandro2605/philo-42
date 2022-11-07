@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dnieto-c <dnieto-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/29 16:28:10 by dnieto-c          #+#    #+#             */
-/*   Updated: 2022/10/29 16:28:10 by dnieto-c         ###   ########.fr       */
+/*   Created: 2022/11/07 09:25:22 by dnieto-c          #+#    #+#             */
+/*   Updated: 2022/11/07 09:25:22 by dnieto-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-// void	*ft_philo_routine(t_env *env)
-// {
-// 	printf("Amount of philos : %d\n", env->amount_philos);
-// 	printf("Time to die : %d\n", env->time_to_die);
-// 	printf("Time to eat : %d\n", env->time_to_eat);
-// 	printf("Time to sleep : %d\n", env->time_to_sleep);
-// 	printf("Time must eat : %d\n", env->times_must_eat);
-// 	return ((void *)0);
-// }
+void    ft_error_args(void)
+{
+    printf("Invalid use of the program.\n");
+    exit(1);
+}
+
+void    ft_create_threads_error(void)
+{
+    printf("Error creating the threads.\n");
+    exit(1);
+}
