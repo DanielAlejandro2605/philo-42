@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <pthread.h>
+ #include <sys/time.h>
 # include "./utils.h"
 
 typedef struct philo
@@ -24,6 +25,8 @@ typedef struct philo
 	pthread_t	id;
 	int			index;
 }				t_philo;
+
+typedef struct timeval timer;
 
 typedef struct environment
 {
@@ -33,7 +36,6 @@ typedef struct environment
 	int				time_to_sleep;
 	int				times_must_eat;
 	pthread_t		*array_thread_id;
-
 	pthread_mutex_t mutex;
 	t_philo			*philos;
 }			t_env;
