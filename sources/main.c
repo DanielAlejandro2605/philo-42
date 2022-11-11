@@ -12,25 +12,25 @@
 
 #include "../includes/philo.h"
 
-static void	ft_dinner(t_env *env)
-{
-	int	i;
+// static void	ft_dinner(t_env *env)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < env->amount_philos)
-	{
-		if (pthread_create(&env->array_thread_id[i], NULL, &ft_philo_routine, env) != 0)
-			printf("Error to create the thread\n");
-		i++;
-	}
-	i = 0;
-	while (i < env->amount_philos)
-	{
-		if(pthread_join(env->array_thread_id[i], NULL) != 0)
-			printf("Error to join the thread\n");
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < env->amount_philos)
+// 	{
+// 		if (pthread_create(&env->array_thread_id[i], NULL, &ft_philo_routine, env) != 0)
+// 			printf("Error to create the thread\n");
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < env->amount_philos)
+// 	{
+// 		if(pthread_join(env->array_thread_id[i], NULL) != 0)
+// 			printf("Error to join the thread\n");
+// 		i++;
+// 	}
+// }
 
 int	main(int argc, char *argv[])
 {
@@ -40,6 +40,6 @@ int	main(int argc, char *argv[])
 		ft_error_args();
 	if(ft_init(&env, argv + 1))
 		ft_create_threads_error();
-	ft_dinner(&env);
-	ft_free(&env);
+	// ft_dinner(&env);
+	// ft_free(&env);
 }

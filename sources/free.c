@@ -12,7 +12,7 @@
 
 #include "../includes/philo.h"
 
-void    ft_free(t_env *env)
-{
-    free(env->array_thread_id);
-}
+// void    ft_free(t_env *env)
+// {
+//     free(env->array_thread_id);
+// }

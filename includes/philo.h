@@ -26,6 +26,27 @@ typedef struct philo
 	int			index;
 }				t_philo;
 
+typedef	struct fork
+{
+	pthread_mutex_t mutex;
+	int				index;
+	int				forks;
+}					t_fork;
+
+typedef union
+{
+    t_philo philo;
+	t_fork	forks;
+}	t_item;
+
+
+typedef struct	list
+{
+	void			*item;
+	struct list		*prev;
+	struct list		*next;
+}					t_list;
+
 typedef struct timeval timer;
 
 typedef struct environment
@@ -35,16 +56,19 @@ typedef struct environment
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				times_must_eat;
-	pthread_t		*array_thread_id;
-	pthread_mutex_t mutex;
-	t_philo			*philos;
+	t_list			*guest_philos;
 }			t_env;
 
 
 /*Initialize environnement*/
 int		ft_init(t_env *env, char *args[]);
+t_list	*ft_set_dinner_table(int amt_philos);
+void	ft_init_philo(t_list **begin_lst, int flag_item);
+void	ft_push(t_list **begin_lst, void *data, size_t data_size);
 /*Routine of each philo*/
 void	*ft_philo_routine();
+/*Time*/
+void	ft_get_time(void);
 /*Free memory*/
 void    ft_free(t_env *env);
 /*Error message for bad use of the program*/
