@@ -11,12 +11,12 @@ HEADERS_SRC				=	philo.h
 HEADERS_DIR				=	-I includes/
 HEADER					=	$(addprefix $(HEADERS_DIR), $(HEADERS_SRC))
 
-_PHILO_FILES			=	main.c init.c routine.c time.c free.c error.c
+_PHILO_FILES			=	main.c init.c parsing.c routine.c time.c free.c error.c
 PHILO_SRC_DIR			=	./sources/
 PHILO_SRCS				=	$(addprefix $(PHILO_SRC_DIR), $(_PHILO_FILES))
 PHILO_OBJS				=	$(PHILO_SRCS:.c=.o)
 
-_UTILS_PHILO			=	ft_atoi.c
+_UTILS_PHILO			=	ft_atoi.c ft_memcpy.c
 UTILS_DIR				=	./utils/
 UTILS_PHILO_SRCS		=	$(addprefix $(UTILS_DIR), $(_UTILS_PHILO))
 UTILS_OBJS				=	$(UTILS_PHILO_SRCS:.c=.o)

@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dnieto-c <dnieto-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 16:48:05 by dnieto-c          #+#    #+#             */
-/*   Updated: 2022/10/21 16:48:05 by dnieto-c         ###   ########.fr       */
+/*   Created: 2022/11/14 11:01:51 by dnieto-c          #+#    #+#             */
+/*   Updated: 2022/11/14 11:01:51 by dnieto-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef UTILS_H
-# define UTILS_H
+#include "../includes/utils.h"
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-int     ft_atoi(const char *str);
-void	*ft_memcpy(void *dest, void *src, size_t n);
-#endif
+void	*ft_memcpy(void *dest, void *src, size_t n)
+{
+	unsigned char	*cpy_src;
+	unsigned char	*cpy_dest;
+	size_t			i;
+
+	if (!dest)
+		return (NULL);
+	i = 0;
+	cpy_src = (unsigned char *)src;
+	cpy_dest = (unsigned char *)dest;
+	while (i < n)
+	{
+		*(cpy_dest + i) = *(cpy_src + i);
+		i++;
+	}
+	return (dest);
+}

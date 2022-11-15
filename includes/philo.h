@@ -13,18 +13,29 @@
 # ifndef PHILO_H
 # define PHILO_H
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
 # include <pthread.h>
- #include <sys/time.h>
+# include <sys/time.h>
 # include "./utils.h"
 
 typedef struct philo
 {
 	pthread_t	id;
 	int			index;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			times_must_eat;
+	int			*forks;
 }				t_philo;
+
+typedef struct environment
+{
+	int				amount_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				times_must_eat;
+}					t_env;
 
 typedef	struct fork
 {
@@ -33,12 +44,11 @@ typedef	struct fork
 	int				forks;
 }					t_fork;
 
-typedef union
+typedef struct	forks
 {
-    t_philo philo;
-	t_fork	forks;
-}	t_item;
-
+	int			rigth_fork;
+	int			left_fork;
+}				t_forks;
 
 typedef struct	list
 {
@@ -49,22 +59,11 @@ typedef struct	list
 
 typedef struct timeval timer;
 
-typedef struct environment
-{
-	int				amount_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				times_must_eat;
-	t_list			*guest_philos;
-}			t_env;
 
-
-/*Initialize environnement*/
+/*Parsing of arguments and initialization of environnement*/
 int		ft_init(t_env *env, char *args[]);
-t_list	*ft_set_dinner_table(int amt_philos);
-void	ft_init_philo(t_list **begin_lst, int flag_item);
-void	ft_push(t_list **begin_lst, void *data, size_t data_size);
+/*Create linked list of philos*/
+t_list	*ft_set_dinner_table(t_env *env, int **forks);
 /*Routine of each philo*/
 void	*ft_philo_routine();
 /*Time*/
