@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dnieto-c <dnieto-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 09:25:22 by dnieto-c          #+#    #+#             */
-/*   Updated: 2022/11/07 09:25:22 by dnieto-c         ###   ########.fr       */
+/*   Created: 2022/11/07 11:54:12 by dnieto-c          #+#    #+#             */
+/*   Updated: 2022/11/07 11:54:12 by dnieto-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../../includes/philo.h"
 
-void    ft_error_args(void)
+void	ft_free(t_env *env, t_philo **philos)
 {
-    printf("Invalid use of the program.\n");
-    exit(1);
-}
+	int	i;
 
-void    ft_create_threads_error(void)
-{
-    printf("Error creating the threads.\n");
-    exit(1);
+	i = 0;
+	while (i < env->amount_philos)
+	{
+		free (philos[i]);
+		i++;
+	}
+	free (philos);
+	free (env->forks);
 }

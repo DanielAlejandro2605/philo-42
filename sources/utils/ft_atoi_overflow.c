@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
+#include "../../includes/utils.h"
 
-int	ft_atoi(const char *str)
+long	ft_atoi_overflow(const char *str)
 {
-	int	result;
-	int	i;
-	int	negative;
+	long		result;
+	int			i;
+	int			negative;
 
 	if (!str)
 		return (0);
@@ -27,7 +27,7 @@ int	ft_atoi(const char *str)
 		negative = -1;
 	else
 		negative = 1;
-	if (negative == -1 || str[i] == '+')
+	if (negative == -1)
 		i++;
 	result = 0;
 	while (str[i] >= '0' && str[i] <= '9')

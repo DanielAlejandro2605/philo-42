@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
+#include "../../includes/utils.h"
 
 void	*ft_memcpy(void *dest, void *src, size_t n)
 {

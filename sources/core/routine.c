@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../../includes/philo.h"
 
 // static t_forks ft_get_index_forks(int philo_index, int amt_philos)
 // {
@@ -29,8 +29,43 @@
 // 	return forks;
 // }
 
+// void	ft_sleeping(t_philo *philo)
+// {
+// 	long int	time_fraction;
+
+// 	usleep(philo->ptr_env->time_to_sleep);
+// 	pthread_mutex_lock(&philo->mutex);
+// 	time_fraction = ft_get_philo_time(philo->ptr_env->start_time_routine);
+// 	printf("%ld sleeping \n", time_fraction);
+// 	pthread_mutex_unlock(&philo->mutex);
+// }
+
 void	*ft_philo_routine(t_philo *philo)
 {
+	pthread_mutex_init(&philo->mutex, NULL);
+	// if (philo->index % 2 == 0 && philo->index % 3 == 0)
+	// {
+	// 	// usleep(philo->ptr_env->time_to_sleep);
+	// 	ft_sleeping(philo);
+	// }
+	// else if (philo->index % 2 == 0)
+	// {
+	// 	ft_sleeping(philo);
+	// 	// usleep(philo->ptr_env->time_to_sleep);
+	// }
+	// if (philo->index % 2 == 0)
+	// {
+	// 	ft_sleeping(philo);
+	// }
+	if (philo->index % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->mutex);
+		usleep(philo->ptr_env->time_to_sleep);
+		printf("%ld\n", ft_get_philo_time(philo->ptr_env->start_time_routine));
+		pthread_mutex_unlock(&philo->mutex);
+	}
+	printf("index : %d\n", philo->index);
+	pthread_mutex_destroy(&philo->mutex);
 	// int	i;
 	// t_forks	forks_to_used;
 
@@ -40,16 +75,16 @@ void	*ft_philo_routine(t_philo *philo)
 	// // usleep(10000);
 	// // pthread_mutex_init(&mutex, NULL);
 	// // pthread_mutex_lock(&mutex);
-	if(philo->index % 2 == 0)
-	{
-		usleep(philo->time_to_sleep);
-		philo->forks[0] = 100;
-		printf("I am philo %d and I use the fork %d\n", philo->index, philo->forks[0]);
-		return ((void*)0);
-	}	
-	philo->forks[0] = 100;
-	printf("I am philo %d and I use the fork %d\n", philo->index, philo->forks[0]);
-	philo->forks[0] = 1;
+	// if(philo->index % 2 == 0)
+	// {
+	// 	usleep(philo->time_to_sleep);
+	// 	philo->forks[0] = 100;
+	// 	printf("I am philo %d and I use the fork %d\n", philo->index, philo->forks[0]);
+	// 	return ((void*)0);
+	// }	
+	// philo->forks[0] = 100;
+	// printf("I am philo %d and I use the fork %d\n", philo->index, philo->forks[0]);
+	// philo->forks[0] = 1;
 	// i = 0;
 	// while (i < 2)
 	// {

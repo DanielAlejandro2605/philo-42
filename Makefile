@@ -6,49 +6,83 @@ RM						=	rm -f
 # LIBRARY
 PTHREAD_LIB				=	pthread
 
-#FILES AND PATH
-HEADERS_SRC				=	philo.h
-HEADERS_DIR				=	-I includes/
-HEADER					=	$(addprefix $(HEADERS_DIR), $(HEADERS_SRC))
-
-_PHILO_FILES			=	main.c init.c parsing.c routine.c time.c free.c error.c
-PHILO_SRC_DIR			=	./sources/
-PHILO_SRCS				=	$(addprefix $(PHILO_SRC_DIR), $(_PHILO_FILES))
-PHILO_OBJS				=	$(PHILO_SRCS:.c=.o)
-
-_UTILS_PHILO			=	ft_atoi.c ft_memcpy.c
-UTILS_DIR				=	./utils/
-UTILS_PHILO_SRCS		=	$(addprefix $(UTILS_DIR), $(_UTILS_PHILO))
-UTILS_OBJS				=	$(UTILS_PHILO_SRCS:.c=.o)
+# PATH
+OBJ_PATH  = build/
+HEADER = includes/
+SRC_PATH  = sources/
+LIBFT = libft/
 
 
-ALL_SRCS				=	$(_PHILO_FILES) $(_UTILS_PHILO)
-BUILD_DIR				=	build
+### Source Files ###
+COR_DIR		=	core/
+CORS		=	main.c parsing.c init.c routine.c error.c time.c free.c
 
-ALL_OBJS				= $(patsubst %.c, $(BUILD_DIR)/%.o, $(ALL_SRCS))
 
-# $(BUILD_DIR)/%.o: 	$(PHILO_SRC_DIR)/%.c $(UTILS_DIR)/%.c
-# 	@mkdir -p $(@D)
-# 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+### Utils Files ###
+UTILS_DIR	=	utils/
+UTILS		=	ft_atoi_overflow.c ft_memcpy.c ft_calloc.c ft_bzero.c \
+				ft_isdigit.c \
 
-# all :
-# 	@echo $(ALL_OBJS)
+### All sources ###
+SOURCES		+=	$(addprefix	$(COR_DIR),$(CORS))
+SOURCES		+=	$(addprefix	$(UTILS_DIR),$(UTILS))
 
-$(NAME) : $(PHILO_OBJS) $(UTILS_OBJS)
-	$(CC) $(FLAGS) $(PHILO_OBJS) $(UTILS_OBJS) -l $(PTHREAD_LIB) -o $(NAME)
+### Objects ###
 
-%.o : %.c
-	$(CC) $(FLAGS) -c $< -o $@
+SRCS = $(addprefix $(SRC_PATH),$(SOURCES))
+OBJS = $(addprefix $(OBJ_PATH),$(SOURCES:.c=.o))
+DEPS = $(addprefix $(OBJ_PATH),$(SOURCES:.c=.d))
+
+### COLORS ###
+NOC         = \033[0m
+GREEN       = \033[1;32m
+CYAN        = \033[1;36m
+
+all:	header tmp $(NAME)
+
+tmp:
+	@mkdir -p $(OBJ_PATH)
+	@mkdir -p $(OBJ_PATH)$(COR_DIR)
+	@mkdir -p $(OBJ_PATH)$(UTILS_DIR)
+
+$(NAME) : $(OBJS)
+	$(CC) $(FLAGS) -o $@ $^ -l $(PTHREAD_LIB) -o $(NAME)
+	@echo "$(GREEN)Project compiled succesfully$(NOC)"
+
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@$(CC) -MMD $(FLAGS) -c -o $@ $<
+	@echo "$(CYAN)Creation of object file -> $(CYAN)$(notdir $@)... $(GREEN)[Done]$(NOC)"
 
 clean :
-	/bin/$(RM) $(PHILO_OBJS)
-	/bin/$(RM) $(UTILS_OBJS)
+	@rm -rf $(PHILO_OBJS)
+	@rm -rf $(UTILS_OBJS)
+	@rm -rf $(OBJ_PATH)
 
 fclean : clean
-	/bin/$(RM) -f $(NAME)
+	@echo "$(GREEN)Cleaning libraries files$(NOC)"
+	@rm -rf $(OBJ_PATH)
+	@rm -f $(NAME)
 
-re :
-	make fclean
-	make
+re : fclean all
+
+header:
+	clear
+	@echo "$(CYAN) $$HEADER_PROJECT"
+
+-include $(DEPS)
 
 .PHONY: all clean fclean re
+
+define HEADER_PROJECT
+
+
+ ______   __  __     __     __         ______     ______     ______     ______   __  __     ______     ______     ______    
+/\  == \ /\ \_\ \   /\ \   /\ \       /\  __ \   /\  ___\   /\  __ \   /\  == \ /\ \_\ \   /\  ___\   /\  == \   /\  ___\   
+\ \  _-/ \ \  __ \  \ \ \  \ \ \____  \ \ \/\ \  \ \___  \  \ \ \/\ \  \ \  _-/ \ \  __ \  \ \  __\   \ \  __<   \ \___  \  
+ \ \_\    \ \_\ \_\  \ \_\  \ \_____\  \ \_____\  \/\_____\  \ \_____\  \ \_\    \ \_\ \_\  \ \_____\  \ \_\ \_\  \/\_____\ 
+  \/_/     \/_/\/_/   \/_/   \/_____/   \/_____/   \/_____/   \/_____/   \/_/     \/_/\/_/   \/_____/   \/_/ /_/   \/_____/ 
+                                                                                                                            
+
+
+endef
+export HEADER_PROJECT
