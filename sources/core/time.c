@@ -24,8 +24,16 @@ long int	ft_get_philo_time(long int start)
 {
 	long int	philo_time;
 
-	printf("start %ld\n", start);
+	// printf("start %ld\n", start);
 	philo_time = ft_get_current_time() - start;
-	printf("philo time %ld\n", philo_time);
+	// printf("philo time %ld\n", philo_time);
 	return (philo_time);
+}
+
+void		ft_usleep(int milliseconds)
+{
+	// int	microseconds;
+
+	// microseconds = (milliseconds * 1000);
+	usleep(milliseconds * 1000);
 }

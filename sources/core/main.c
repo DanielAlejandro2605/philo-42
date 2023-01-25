@@ -18,6 +18,7 @@ static int	ft_dinner(t_env *env, t_philo **philos)
 
 	i = 0;
 	env->start_time_routine = ft_get_current_time();
+	pthread_mutex_init(&env->mutex_print, NULL);
 	while (i < env->amount_philos)
 	{
 		if (pthread_create(&philos[i]->id, NULL, &ft_philo_routine, philos[i]))
@@ -31,7 +32,20 @@ static int	ft_dinner(t_env *env, t_philo **philos)
 			return (ft_join_threads_error());
 		i++;
 	}
+	pthread_mutex_destroy(&env->mutex_print);
 	return (0);
+}
+
+static void	ft_print_forks_by_philo(int	amt_philos, t_philo	**philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < amt_philos)
+	{
+		printf("idx :%d | left %d | rigth %d\n", philos[i]->index, philos[i]->forks_idx.l,  philos[i]->forks_idx.r);
+		i++;
+	}
 }
 
 // static void	ft_dinner(t_env *env)
@@ -78,6 +92,7 @@ int	main(int argc, char *argv[])
 	philos = ft_init_philos(&env);
 	if (!philos)
 		return (2);
+	// ft_print_forks_by_philo(env.amount_philos, philos);
 	ft_dinner(&env, philos);
 	ft_free(&env, philos);
 }

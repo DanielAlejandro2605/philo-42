@@ -12,6 +12,23 @@
 
 # include "../../includes/philo.h"
 
+static t_forks	ft_define_forks(int	amt_philos, int idx_philo)
+{
+	t_forks	f_philo;
+
+	if (idx_philo == 1)
+	{
+		f_philo.l = amt_philos - 1;
+		f_philo.r = 0;
+	}
+	else
+	{
+		f_philo.l = idx_philo - 2;
+		f_philo.r = idx_philo - 1;
+	}
+	return (f_philo);
+}
+
 t_philo**	ft_init_philos(t_env *env)
 {
 	t_philo **philos;
@@ -29,6 +46,7 @@ t_philo**	ft_init_philos(t_env *env)
 			return (NULL);
 		}
 		philos[i]->index = i + 1;
+		philos[i]->forks_idx = ft_define_forks(env->amount_philos, i + 1);
 		philos[i]->ptr_env = env;
 		i++;
 	}

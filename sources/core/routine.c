@@ -12,97 +12,73 @@
 
 #include "../../includes/philo.h"
 
-// static t_forks ft_get_index_forks(int philo_index, int amt_philos)
-// {
-// 	t_forks	forks;
+static void	ft_think_philo(t_philo *philo)
+{
+	ft_usleep(2);
+	pthread_mutex_lock(&philo->ptr_env->mutex_print);
+	printf("%ld %d is thinking\n", ft_get_philo_time(philo->ptr_env->start_time_routine), philo->index);
+	pthread_mutex_unlock(&philo->ptr_env->mutex_print);
+}
 
-// 	if (philo_index == 0)
-// 	{
-// 		forks.left_fork = 0;
-// 		forks.rigth_fork = amt_philos - 1;
-// 	}
-// 	else
-// 	{
-// 		forks.left_fork = philo_index;
-// 		forks.rigth_fork = philo_index - 1;
-// 	}
-// 	return forks;
-// }
+static void	ft_sleep_philo(t_philo *philo)
+{
+	ft_usleep(philo->ptr_env->time_to_sleep);
+	pthread_mutex_lock(&philo->ptr_env->mutex_print);
+	printf("%ld %d is sleeping\n", ft_get_philo_time(philo->ptr_env->start_time_routine), philo->index);
+	pthread_mutex_unlock(&philo->ptr_env->mutex_print);
+}
 
-// void	ft_sleeping(t_philo *philo)
-// {
-// 	long int	time_fraction;
-
-// 	usleep(philo->ptr_env->time_to_sleep);
-// 	pthread_mutex_lock(&philo->mutex);
-// 	time_fraction = ft_get_philo_time(philo->ptr_env->start_time_routine);
-// 	printf("%ld sleeping \n", time_fraction);
-// 	pthread_mutex_unlock(&philo->mutex);
-// }
+static void	ft_eat_philo(t_philo *philo)
+{
+	if (philo->ptr_env->forks[philo->forks_idx.l] == 0)
+	{
+		pthread_mutex_lock(&philo->mutex);
+		philo->ptr_env->forks[philo->forks_idx.l] = 1;
+		pthread_mutex_lock(&philo->ptr_env->mutex_print);
+		printf("%ld %d has taken a fork\n", ft_get_philo_time(philo->ptr_env->start_time_routine), philo->index);
+		pthread_mutex_unlock(&philo->ptr_env->mutex_print);
+		if (philo->ptr_env->forks[philo->forks_idx.r] == 0)
+		{
+			printf("%ld %d has taken a fork\n", ft_get_philo_time(philo->ptr_env->start_time_routine), philo->index);
+			philo->ptr_env->forks[philo->forks_idx.r] = 1;
+			pthread_mutex_lock(&philo->ptr_env->mutex_print);
+			printf("%ld %d  is eating\n", ft_get_philo_time(philo->ptr_env->start_time_routine), philo->index);
+			pthread_mutex_unlock(&philo->ptr_env->mutex_print);
+			ft_usleep(philo->ptr_env->time_to_eat);
+			philo->ptr_env->forks[philo->forks_idx.l] = 0;
+			philo->ptr_env->forks[philo->forks_idx.r] = 0;
+			pthread_mutex_unlock(&philo->mutex);
+		}
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->ptr_env->mutex_print);
+		printf("Hay algo ocupado? %d\n", philo->index);
+		pthread_mutex_unlock(&philo->ptr_env->mutex_print);
+	}
+}
 
 void	*ft_philo_routine(t_philo *philo)
 {
 	pthread_mutex_init(&philo->mutex, NULL);
-	// if (philo->index % 2 == 0 && philo->index % 3 == 0)
-	// {
-	// 	// usleep(philo->ptr_env->time_to_sleep);
-	// 	ft_sleeping(philo);
-	// }
-	// else if (philo->index % 2 == 0)
-	// {
-	// 	ft_sleeping(philo);
-	// 	// usleep(philo->ptr_env->time_to_sleep);
-	// }
-	// if (philo->index % 2 == 0)
-	// {
-	// 	ft_sleeping(philo);
-	// }
-	if (philo->index % 2 == 0)
+	while (1)
 	{
-		pthread_mutex_lock(&philo->mutex);
-		usleep(philo->ptr_env->time_to_sleep);
-		printf("%ld\n", ft_get_philo_time(philo->ptr_env->start_time_routine));
-		pthread_mutex_unlock(&philo->mutex);
-	}
-	printf("index : %d\n", philo->index);
-	pthread_mutex_destroy(&philo->mutex);
-	// int	i;
-	// t_forks	forks_to_used;
+		if (philo->index % 2 == 0 && philo->index % 3 == 0)
+			ft_usleep(1);
+		if (philo->index % 2 == 0)
+		{
+			ft_sleep_philo(philo);
+			ft_eat_philo(philo);
+			ft_think_philo(philo);
+		}
+		else
+		{
+			ft_eat_philo(philo);
+			ft_think_philo(philo);
+			ft_sleep_philo(philo);
+		}
 
-	// (void)forks_to_used;
-	// printf("%d\n", env->amount_philos);
-	// // pthread_mutex_t mutex;
-	// // usleep(10000);
-	// // pthread_mutex_init(&mutex, NULL);
-	// // pthread_mutex_lock(&mutex);
-	// if(philo->index % 2 == 0)
-	// {
-	// 	usleep(philo->time_to_sleep);
-	// 	philo->forks[0] = 100;
-	// 	printf("I am philo %d and I use the fork %d\n", philo->index, philo->forks[0]);
-	// 	return ((void*)0);
-	// }	
-	// philo->forks[0] = 100;
-	// printf("I am philo %d and I use the fork %d\n", philo->index, philo->forks[0]);
-	// philo->forks[0] = 1;
-	// i = 0;
-	// while (i < 2)
-	// {
-	// 	printf("I am the fork %d\n", philo->forks[i]);
-	// 	i++;
-	// }	
-	// pthread_mutex_unlock(&mutex);
-	// pthread_mutex_destroy(&mutex);
-	// ft_get_time();
-	// pthread_mutex_lock(&env->mutex);
-	// printf("Philo %d\n", env->philo_id);
-	// printf("Rigth %d - Left %d\n", env->forks[env->philo_forks->rigth_fork], env->forks[env->philo_forks->left_fork]);	//printf("IN THREAD : Fork rigth %d, Fork left : %d\n", env->philo_forks->rigth_fork, env->philo_forks->left_fork);
-	// pthread_mutex_unlock(&env->mutex);
-	// printf("Amount of philos : %d\n", env->amount_philos);
-	// printf("Time to die : %d\n", env->time_to_die);
-	// printf("Time to eat : %d\n", env->time_to_eat);
-	// printf("Time to sleep : %d\n", env->time_to_sleep);
-	// printf("Time must eat : %d\n", env->times_must_eat);
-    // printf("Hello from the thread\n");
+	}
+	pthread_mutex_destroy(&philo->mutex);
 	return ((void*)0);
 }

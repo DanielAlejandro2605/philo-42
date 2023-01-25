@@ -1,6 +1,7 @@
 NAME					=	philo
 CC						=	cc
-FLAGS					=	-Wall -Wextra -Werror -g
+# FLAGS					=	-Wall -Wextra -Werror -g
+FLAGS					=	-g
 RM						=	rm -f
 
 # LIBRARY

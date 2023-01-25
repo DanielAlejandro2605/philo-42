@@ -26,8 +26,15 @@ typedef struct environment
 	int				time_to_sleep;
 	int				times_must_eat;
 	long int		start_time_routine;
+	pthread_mutex_t mutex_print;
 	int				*forks;
 }					t_env;
+
+typedef struct	forks
+{
+	int			r;
+	int			l;
+}				t_forks;
 
 typedef struct philo
 {
@@ -36,43 +43,24 @@ typedef struct philo
 	int				index;
 	int				last_meal;
 	int				amt_meals;
+	t_forks			forks_idx;
 	t_env			*ptr_env;
-}				t_philo;
-
-typedef	struct fork
-{
-	pthread_mutex_t mutex;
-	int				index;
-	int				forks;
-}					t_fork;
-
-typedef struct	forks
-{
-	int			rigth_fork;
-	int			left_fork;
-}				t_forks;
-
-typedef struct	list
-{
-	void			*item;
-	struct list		*prev;
-	struct list		*next;
-}					t_list;
+}					t_philo;
 
 typedef struct timeval timer;
-
 
 /*Parsing of arguments and initialization of environnement*/
 int			ft_init(t_env *env, int argc, char *args[]);
 /*Creation of array of philos*/
 t_philo**	ft_init_philos(t_env *env);
 /*Create linked list of philos*/
-t_list		*ft_set_dinner_table(t_env *env, int **forks);
+// t_list		*ft_set_dinner_table(t_env *env, int **forks);
 /*Routine of each philo*/
 void		*ft_philo_routine();
 /*Time*/
 long int	ft_get_current_time(void);
 long int	ft_get_philo_time(long int start);
+void		ft_usleep(int milliseconds);
 /*Free memory*/
 void		ft_free(t_env *env, t_philo **philos);
 /*Error message for bad use of the program*/

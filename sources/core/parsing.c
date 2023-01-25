@@ -39,11 +39,10 @@ static int	ft_check_args(int argc, char *args[])
 		if (ft_check_numeric_args(args[i]))
 			return (ft_error_args());
 		check = ft_atoi_overflow(args[i]);
-		if (check > INT_MAX || check <= 0)
-		{
-			if (check < 0 && (i != argc) )
-				return (1);
-		}
+		if (check > INT_MAX)
+			return (ft_error_args());
+		if (check <= 0)
+			return (ft_error_args());
 		i++;
 	}
 	return (0);
