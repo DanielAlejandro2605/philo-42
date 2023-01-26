@@ -20,6 +20,10 @@ static t_forks	ft_define_forks(int	amt_philos, int idx_philo)
 	{
 		f_philo.l = amt_philos - 1;
 		f_philo.r = 0;
+		if (f_philo.l == f_philo.r)
+		{
+			f_philo.l = -1;
+		}
 	}
 	else
 	{
@@ -47,7 +51,7 @@ t_philo**	ft_init_philos(t_env *env)
 		}
 		philos[i]->index = i + 1;
 		philos[i]->forks_idx = ft_define_forks(env->amount_philos, i + 1);
-		philos[i]->ptr_env = env;
+		philos[i]->e = env;
 		i++;
 	}
 	philos[i] = NULL;
@@ -79,8 +83,8 @@ t_philo**	ft_init_philos(t_env *env)
 // 		return (NULL);
 // 	new_philo->index = index + 1;
 // 	new_philo->time_to_die = env->time_to_die;
-// 	new_philo->time_to_eat = env->time_to_eat;
-// 	new_philo->time_to_sleep = env->time_to_sleep;
+// 	new_philo->t_eat = env->t_eat;
+// 	new_philo->t_sleep = env->t_sleep;
 // 	if (env->times_must_eat)
 // 		new_philo->times_must_eat = env->times_must_eat;
 // 	else

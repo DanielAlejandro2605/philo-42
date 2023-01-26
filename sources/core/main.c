@@ -17,7 +17,7 @@ static int	ft_dinner(t_env *env, t_philo **philos)
 	int	i;
 
 	i = 0;
-	env->start_time_routine = ft_get_current_time();
+	env->s_time = ft_get_current_time();
 	pthread_mutex_init(&env->mutex_print, NULL);
 	while (i < env->amount_philos)
 	{

@@ -21,11 +21,11 @@
 typedef struct environment
 {
 	int				amount_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
 	int				times_must_eat;
-	long int		start_time_routine;
+	long int		s_time;
 	pthread_mutex_t mutex_print;
 	int				*forks;
 }					t_env;
@@ -44,7 +44,7 @@ typedef struct philo
 	int				last_meal;
 	int				amt_meals;
 	t_forks			forks_idx;
-	t_env			*ptr_env;
+	t_env			*e;
 }					t_philo;
 
 typedef struct timeval timer;

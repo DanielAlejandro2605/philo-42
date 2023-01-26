@@ -65,9 +65,9 @@ int	ft_init(t_env *env, int argc, char *args[])
 		return (1);
 	memset((void *)env, 0, sizeof(t_env));
 	env->amount_philos = (int)ft_atoi_overflow(args[0]);
-	env->time_to_die = (int)ft_atoi_overflow(args[1]);
-	env->time_to_eat = (int)ft_atoi_overflow(args[2]);
-	env->time_to_sleep = (int)ft_atoi_overflow(args[3]);
+	env->t_die = (int)ft_atoi_overflow(args[1]);
+	env->t_eat = (int)ft_atoi_overflow(args[2]);
+	env->t_sleep = (int)ft_atoi_overflow(args[3]);
 	if (args[4])
 		env->times_must_eat = (int)ft_atoi_overflow(args[4]);
 	else

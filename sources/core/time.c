@@ -32,8 +32,5 @@ long int	ft_get_philo_time(long int start)
 
 void		ft_usleep(int milliseconds)
 {
-	// int	microseconds;
-
-	// microseconds = (milliseconds * 1000);
 	usleep(milliseconds * 1000);
 }
