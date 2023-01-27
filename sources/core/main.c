@@ -16,6 +16,7 @@ static int	checker(t_env *env)
 {
 	while (1)
 	{
+		printf("env->one_philo_died %d\n", env->one_philo_died);
 		if (env->one_philo_died)
 			return (1);
 	}

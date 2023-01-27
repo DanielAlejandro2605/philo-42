@@ -119,6 +119,7 @@ static int	ft_check_died_time(t_philo *p)
 		if ((ft_get_current_time() - p->e->s_time) >= p->e->t_die)
 		{
 			pthread_mutex_lock(&p->e->mutex_print);
+			p->e->one_philo_died = 1;
 			printf("%ld %d is died\n", ft_get_philo_time(p->e->s_time), p->index);
 			pthread_mutex_unlock(&p->e->mutex_print);
 			return (1);
@@ -129,6 +130,7 @@ static int	ft_check_died_time(t_philo *p)
 		if ((ft_get_current_time() - p->last_meal) >= p->e->t_die)
 		{
 			pthread_mutex_lock(&p->e->mutex_print);
+			p->e->one_philo_died = 1;
 			printf("%ld %d is died\n", ft_get_philo_time(p->e->s_time), p->index);
 			pthread_mutex_unlock(&p->e->mutex_print);
 			return (1);
@@ -163,6 +165,11 @@ static int	ft_take_left_fork(t_philo *philo)
 	return (0);
 }
 
+static int	corpse_on_able(t_philo *philo)
+{
+	
+}
+
 static int	ft_philo_odd(t_philo *philo)
 {
 	while (1)
@@ -180,22 +187,10 @@ static int	ft_philo_odd(t_philo *philo)
 				ft_put_forks(philo);
 			}
 			else
-			{
-				if (ft_check_died_time(philo))
-				{
-					pthread_mutex_unlock(&philo->mutex);
-					return (1);
-				}
-			}
+				ft_check_died_time(philo);
 		}
 		else
-		{
-			if (ft_check_died_time(philo))
-			{
-				pthread_mutex_unlock(&philo->mutex);
-				return (1);
-			}
-		}
+			ft_check_died_time(philo);
 		pthread_mutex_unlock(&philo->mutex);
 		// pthread_mutex_lock(&philo->mutex);
 		// if (philo->e->forks[philo->forks_idx.l] == 0)
@@ -235,6 +230,8 @@ static int	ft_philo_odd(t_philo *philo)
 		// }
 	}
 }
+
+// static void	
 
 void	*ft_philo_routine(t_philo *philo)
 {
