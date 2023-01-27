@@ -12,6 +12,16 @@
 
 #include "../../includes/philo.h"
 
+static int	checker(t_env *env)
+{
+	while (1)
+	{
+		if (env->one_philo_died)
+			return (1);
+	}
+	return (0);
+}
+
 static int	ft_dinner(t_env *env, t_philo **philos)
 {
 	int	i;
@@ -31,6 +41,11 @@ static int	ft_dinner(t_env *env, t_philo **philos)
 		if (pthread_join(philos[i]->id, NULL))
 			return (ft_join_threads_error());
 		i++;
+	}
+	if (checker(env))
+	{
+		pthread_mutex_destroy(&env->mutex_print);
+		return (1);
 	}
 	pthread_mutex_destroy(&env->mutex_print);
 	return (0);
@@ -92,7 +107,7 @@ int	main(int argc, char *argv[])
 	philos = ft_init_philos(&env);
 	if (!philos)
 		return (2);
-	// ft_print_forks_by_philo(env.amount_philos, philos);
-	ft_dinner(&env, philos);
-	ft_free(&env, philos);
+	ft_print_forks_by_philo(env.amount_philos, philos);
+	if (ft_dinner(&env, philos))
+		ft_free(&env, philos);
 }

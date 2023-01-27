@@ -20,10 +20,6 @@ static t_forks	ft_define_forks(int	amt_philos, int idx_philo)
 	{
 		f_philo.l = amt_philos - 1;
 		f_philo.r = 0;
-		if (f_philo.l == f_philo.r)
-		{
-			f_philo.l = -1;
-		}
 	}
 	else
 	{

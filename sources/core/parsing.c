@@ -72,6 +72,7 @@ int	ft_init(t_env *env, int argc, char *args[])
 		env->times_must_eat = (int)ft_atoi_overflow(args[4]);
 	else
 		env->times_must_eat = 0;
+	env->one_philo_died = 0;
 	env->forks = ft_get_forks(env->amount_philos);
 	if (!env->forks)
 		return (ft_error_malloc_failed());
