@@ -1,7 +1,7 @@
 NAME					=	philo
 CC						=	cc
-# FLAGS					=	-Wall -Wextra -Werror -g
-FLAGS					=	-g
+FLAGS					=	-Wall -Wextra -Werror -g
+# FLAGS					=	-g
 RM						=	rm -f
 
 # LIBRARY
@@ -55,14 +55,12 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@echo "$(CYAN)Creation of object file -> $(CYAN)$(notdir $@)... $(GREEN)[Done]$(NOC)"
 
 clean :
-	@rm -rf $(PHILO_OBJS)
-	@rm -rf $(UTILS_OBJS)
-	@rm -rf $(OBJ_PATH)
+	@echo "clean: $(GREEN)Cleaning object files$(NOC)"
+	rm -rf $(OBJ_PATH)
 
 fclean : clean
-	@echo "$(GREEN)Cleaning libraries files$(NOC)"
-	@rm -rf $(OBJ_PATH)
-	@rm -f $(NAME)
+	@echo "fclean: $(GREEN)Cleaning executable$(NOC)"
+	rm -f $(NAME)
 
 re : fclean all
 

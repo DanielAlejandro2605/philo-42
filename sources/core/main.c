@@ -30,6 +30,7 @@ static int	ft_dinner(t_env *env, t_philo **philos)
 	i = 0;
 	env->s_time = ft_get_current_time();
 	pthread_mutex_init(&env->mutex_print, NULL);
+	pthread_mutex_init(&env->mutex_died, NULL);
 	while (i < env->amount_philos)
 	{
 		if (pthread_create(&philos[i]->id, NULL, &ft_philo_routine, philos[i]))
@@ -46,9 +47,11 @@ static int	ft_dinner(t_env *env, t_philo **philos)
 	if (checker(env))
 	{
 		pthread_mutex_destroy(&env->mutex_print);
+		pthread_mutex_destroy(&env->mutex_died);
 		return (1);
 	}
 	pthread_mutex_destroy(&env->mutex_print);
+	pthread_mutex_destroy(&env->mutex_died);
 	return (0);
 }
 
