@@ -42,9 +42,7 @@ t_philo**	ft_init_philos(t_env *env)
 	{
 		philos[i] = ft_calloc(1, sizeof(t_philo));
 		if (!philos[i])
-		{
 			return (NULL);
-		}
 		philos[i]->index = i + 1;
 		philos[i]->forks_idx = ft_define_forks(env->amount_philos, i + 1);
 		philos[i]->e = env;
@@ -53,6 +51,7 @@ t_philo**	ft_init_philos(t_env *env)
 	philos[i] = NULL;
 	return (philos);
 }
+
 // static int	*ft_create_forks(int amt_forks)
 // {
 // 	int	*forks;

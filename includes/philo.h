@@ -41,7 +41,8 @@ typedef struct	forks
 typedef struct philo
 {
 	pthread_t		id;
-	pthread_mutex_t mutex_actions;
+	pthread_mutex_t mutex_left;
+	pthread_mutex_t mutex_rigth;
 	pthread_mutex_t mutex_died;
 	int				index;
 	int				amt_meals;
