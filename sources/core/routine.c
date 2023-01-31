@@ -113,11 +113,11 @@ static int	ft_get_meal(t_philo *philo)
 		return (2);
 	// pthread_mutex_lock(&philo->mutex_actions);
 	philo->last_meal = ft_get_current_time();
-	ft_usleep(philo->e->t_eat);
 	pthread_mutex_lock(&philo->e->mutex_print);
 	printf("%ld %d is eating\n", ft_get_philo_time(philo->e->s_time), philo->index);
 	ft_put_forks(philo);
 	pthread_mutex_unlock(&philo->e->mutex_print);
+	ft_usleep(philo->e->t_eat);
 	// pthread_mutex_unlock(&philo->mutex_actions);
 	return (0);
 }
@@ -243,14 +243,16 @@ static int	ft_get_forks(t_philo *philo)
 	pthread_mutex_lock(&philo->mutex_rigth);
 	if (ft_take_rigth_fork(philo) == 0)
 	{
-		pthread_mutex_unlock(&philo->mutex_rigth);
 		pthread_mutex_lock(&philo->mutex_left);
 		if (ft_take_left_fork(philo) == 0)
 		{
+			ft_get_meal(philo);
 			pthread_mutex_unlock(&philo->mutex_left);
+			pthread_mutex_unlock(&philo->mutex_rigth);
 			return (0);
 		}
 		pthread_mutex_unlock(&philo->mutex_left);
+		pthread_mutex_unlock(&philo->mutex_rigth);
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->mutex_rigth);
@@ -265,10 +267,7 @@ static int	ft_eat(t_philo *philo)
 	ft_check_died_time(philo);
 	if (ft_check_died_table(philo))
 		return (2);
-	if (ft_get_forks(philo) == 0)
-	{
-		ft_get_meal(philo);
-	}
+	ft_get_forks(philo);
 	return (0);
 }
 
@@ -278,7 +277,7 @@ void	*ft_philo_routine(t_philo *philo)
 	pthread_mutex_init(&philo->mutex_left, NULL);
 	pthread_mutex_init(&philo->mutex_died, NULL);
 	if (philo->index % 2 == 0)
-			ft_usleep(100);
+		ft_usleep(philo->e->t_eat / 2);
 	while (1)
 	{
 		if (ft_eat(philo))
