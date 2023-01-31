@@ -232,6 +232,31 @@ static int	ft_eat_routine_even(t_philo *philo)
 	return (0);
 }
 
+static int	ft_get_forks(t_philo *philo)
+{
+	int	has_first_fork;
+	int	has_second_fork;
+
+	ft_check_died_time(philo);
+	if (ft_check_died_table(philo))
+		return (2);
+	pthread_mutex_lock(&philo->mutex_rigth);
+	if (ft_take_rigth_fork(philo) == 0)
+	{
+		pthread_mutex_unlock(&philo->mutex_rigth);
+		pthread_mutex_lock(&philo->mutex_left);
+		if (ft_take_left_fork(philo) == 0)
+		{
+			pthread_mutex_unlock(&philo->mutex_left);
+			return (0);
+		}
+		pthread_mutex_unlock(&philo->mutex_left);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->mutex_rigth);
+	return (1);
+}
+
 static int	ft_eat(t_philo *philo)
 {
 	int	has_first_fork;
@@ -240,43 +265,9 @@ static int	ft_eat(t_philo *philo)
 	ft_check_died_time(philo);
 	if (ft_check_died_table(philo))
 		return (2);
-	if (philo->index % 2 == 0)
+	if (ft_get_forks(philo) == 0)
 	{
-		pthread_mutex_lock(&philo->mutex_left);
-		has_first_fork = ft_take_left_fork(philo);
-		pthread_mutex_lock(&philo->e->mutex_print);
-		if (has_first_fork == 0)
-			printf("%d %d has take succesfully her first fork\n", philo->index, has_first_fork);
-		else
-			printf("%d %d has couldn't take her first fork\n", philo->index, has_first_fork);	
-		pthread_mutex_unlock(&philo->e->mutex_print);
-		has_second_fork = ft_take_rigth_fork(philo);
-		pthread_mutex_lock(&philo->e->mutex_print);
-		if (has_second_fork == 0)
-			printf("%d %d has take succesfully her second fork\n", philo->index, has_first_fork);
-		else
-			printf("%d %d has couldn't take her second fork\n", philo->index, has_first_fork);	
-		pthread_mutex_unlock(&philo->e->mutex_print);
-		pthread_mutex_unlock(&philo->mutex_left);
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->mutex_rigth);
-		has_first_fork = ft_take_rigth_fork(philo);
-		pthread_mutex_lock(&philo->e->mutex_print);
-		if (has_first_fork == 0)
-			printf("%d %d has take succesfully her first fork\n", philo->index, has_first_fork);
-		else
-			printf("%d %d has couldn't take her first fork\n", philo->index, has_first_fork);	
-		pthread_mutex_unlock(&philo->e->mutex_print);
-		has_second_fork = ft_take_left_fork(philo);
-		pthread_mutex_lock(&philo->e->mutex_print);
-		if (has_second_fork == 0)
-			printf("%d %d has take succesfully her second fork\n", philo->index, has_first_fork);
-		else
-			printf("%d %d has couldn't take her second fork\n", philo->index, has_first_fork);	
-		pthread_mutex_unlock(&philo->e->mutex_print);
-		pthread_mutex_unlock(&philo->mutex_rigth);
+		ft_get_meal(philo);
 	}
 	return (0);
 }
@@ -286,11 +277,13 @@ void	*ft_philo_routine(t_philo *philo)
 	pthread_mutex_init(&philo->mutex_rigth, NULL);
 	pthread_mutex_init(&philo->mutex_left, NULL);
 	pthread_mutex_init(&philo->mutex_died, NULL);
+	if (philo->index % 2 == 0)
+			ft_usleep(100);
 	while (1)
 	{
 		if (ft_eat(philo))
 			break ;
-		ft_think_philo(philo);
+		// ft_think_philo(philo);
 	}
 	pthread_mutex_destroy(&philo->mutex_rigth);
 	pthread_mutex_destroy(&philo->mutex_left);
