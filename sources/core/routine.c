@@ -273,19 +273,13 @@ static int	ft_eat(t_philo *philo)
 
 void	*ft_philo_routine(t_philo *philo)
 {
-	pthread_mutex_init(&philo->mutex_rigth, NULL);
-	pthread_mutex_init(&philo->mutex_left, NULL);
-	pthread_mutex_init(&philo->mutex_died, NULL);
 	if (philo->index % 2 == 0)
 		ft_usleep(philo->e->t_eat / 2);
 	while (1)
 	{
 		if (ft_eat(philo))
 			break ;
-		// ft_think_philo(philo);
+		ft_think_philo(philo);
 	}
-	pthread_mutex_destroy(&philo->mutex_rigth);
-	pthread_mutex_destroy(&philo->mutex_left);
-	pthread_mutex_destroy(&philo->mutex_died);
 	return ((void*)0);
 }

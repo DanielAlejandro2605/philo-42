@@ -1,7 +1,7 @@
 NAME					=	philo
 CC						=	cc
-# FLAGS					=	-Wall -Wextra -Werror -g
-FLAGS					=	-g
+FLAGS					=	-Wall -Wextra -Werror -g
+# FLAGS					=	-g
 RM						=	rm -f
 
 # LIBRARY
@@ -16,7 +16,7 @@ LIBFT = libft/
 
 ### Source Files ###
 COR_DIR		=	core/
-CORS		=	main.c parsing.c init.c routine.c error.c time.c free.c
+CORS		=	main.c parsing.c init.c error.c time.c free.c
 
 
 ### Utils Files ###

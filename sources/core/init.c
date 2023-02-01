@@ -12,23 +12,6 @@
 
 # include "../../includes/philo.h"
 
-static t_forks	ft_define_forks(int	amt_philos, int idx_philo)
-{
-	t_forks	f_philo;
-
-	if (idx_philo == 1)
-	{
-		f_philo.l = amt_philos - 1;
-		f_philo.r = 0;
-	}
-	else
-	{
-		f_philo.l = idx_philo - 2;
-		f_philo.r = idx_philo - 1;
-	}
-	return (f_philo);
-}
-
 t_philo**	ft_init_philos(t_env *env)
 {
 	t_philo **philos;
@@ -43,8 +26,15 @@ t_philo**	ft_init_philos(t_env *env)
 		philos[i] = ft_calloc(1, sizeof(t_philo));
 		if (!philos[i])
 			return (NULL);
+		// Proteger
+		pthread_mutex_init(&philos[i]->mutex_died, NULL);
 		philos[i]->index = i + 1;
-		philos[i]->forks_idx = ft_define_forks(env->amount_philos, i + 1);
+		philos[i]->t_die = env->t_die;
+		philos[i]->t_eat = env->t_eat;
+		philos[i]->t_sleep = env->t_sleep;
+		philos[i]->times_must_eat = env->times_must_eat;
+		philos[i]->rigth_index = i;
+		philos[i]->left_index = (i + 1) % env->amount_philos;
 		philos[i]->e = env;
 		i++;
 	}
