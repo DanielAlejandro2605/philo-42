@@ -57,9 +57,9 @@ static pthread_mutex_t *ft_init_mutex(int amt_philos)
 	if (!mutex_fork)
 		return (NULL);
 	i = 0;
-	while (i < amount_philos)
+	while (i < amt_philos)
 	{
-		pthread_mutex_init(&mutex_fork, NULL);
+		pthread_mutex_init(&mutex_fork[i], NULL);
 		i++;
 	}
 	return (mutex_fork);
@@ -93,7 +93,7 @@ int	ft_init(t_env *env, int argc, char *args[])
 	env->forks = ft_get_forks(env->amount_philos);
 	if (!env->forks)
 		return (ft_error_malloc_failed());
-	env->mutex_fork = ft_init_mutex(env->amount_philos)
+	env->mutex_fork = ft_init_mutex(env->amount_philos);
 	if (!env->mutex_fork)
 	{
 		free (env->forks);

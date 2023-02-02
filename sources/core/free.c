@@ -24,4 +24,5 @@ void	ft_free(t_env *env, t_philo **philos)
 	}
 	free (philos);
 	free (env->forks);
+	free (env->mutex_fork);
 }

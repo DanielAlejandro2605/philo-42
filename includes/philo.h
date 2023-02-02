@@ -29,6 +29,7 @@ typedef struct environment
 	long int		s_time;
 	pthread_mutex_t mutex_print;
 	pthread_mutex_t mutex_died;
+	pthread_mutex_t mutex_stop;
 	int				*forks;
 	pthread_mutex_t *mutex_fork;
 }					t_env;
@@ -49,8 +50,8 @@ typedef struct philo
 	int				t_sleep;
 	int				times_must_eat;
 	int				amt_meals;
-	int				rigth_index;
-	int				left_index;
+	int				r_index;
+	int				l_index;
 	long int		last_meal;
 	t_env			*e;
 }					t_philo;

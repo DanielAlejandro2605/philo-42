@@ -12,29 +12,70 @@
 
 #include "../../includes/philo.h"
 
+static int	ft_init_or_destroy_dinner_mutex(t_env *env, int flag)
+{
+	if (flag == 1)
+	{
+		if (pthread_mutex_init(&env->mutex_print, NULL) != 0)
+			return (1);
+		if (pthread_mutex_init(&env->mutex_died, NULL) != 0)
+			return (1);
+		if (pthread_mutex_init(&env->mutex_stop, NULL) != 0)
+			return (1);
+	}
+	else if (flag == 2)
+	{
+		if (pthread_mutex_destroy(&env->mutex_print) != 0)
+			return (1);
+		if (pthread_mutex_destroy(&env->mutex_died) != 0)
+			return (1);
+		if (pthread_mutex_destroy(&env->mutex_stop) != 0)
+			return (1);
+	}
+	return (0);
+}
+
+static int	ft_create_threads(t_env *env, t_philo **philos)
+{
+	int	i;
+
+	if (ft_init_or_destroy_dinner_mutex(env, 1))
+		return (1);
+	env->s_time = ft_get_current_time();
+	i = -1;
+	while (++i < env->amount_philos)
+	{
+		if (pthread_create(&philos[i]->id, NULL, &ft_philo_routine, philos[i]))
+		{
+			while (i-- >= 0)
+			{
+				if (pthread_join(philos[i]->id, NULL))
+					return (ft_join_threads_error());
+			}
+			if (ft_init_or_destroy_dinner_mutex(env, 2))
+				return (1);
+			return (0);
+		}
+	}
+	return (0);
+}
+
 static int	ft_dinner(t_env *env, t_philo **philos)
 {
 	int	i;
 
-	i = 0;
-	env->s_time = ft_get_current_time();
-	pthread_mutex_init(&env->mutex_print, NULL);
-	pthread_mutex_init(&env->mutex_died, NULL);
-	while (i < env->amount_philos)
-	{
-		if (pthread_create(&philos[i]->id, NULL, &ft_philo_routine, philos[i]))
-			return (ft_create_threads_error());
-		i++;
-	}
-	i = 0;
-	while (i < env->amount_philos)
+	if (ft_init_or_destroy_dinner_mutex(env, 1))
+		return (1);
+	if (ft_create_threads(env, philos))
+		return (1);
+	i = -1;
+	while (++i < env->amount_philos)
 	{
 		if (pthread_join(philos[i]->id, NULL))
 			return (ft_join_threads_error());
-		i++;
 	}
-	pthread_mutex_destroy(&env->mutex_print);
-	pthread_mutex_destroy(&env->mutex_died);
+	if (ft_init_or_destroy_dinner_mutex(env, 2))
+				return (1);
 	return (0);
 }
 
@@ -45,7 +86,7 @@ static void	ft_print_forks_by_philo(int	amt_philos, t_philo	**philos)
 	i = 0;
 	while (i < amt_philos)
 	{
-		printf("idx :%d | left %d | rigth %d\n", philos[i]->index, philos[i]->rigth_index,  philos[i]->left_index);
+		printf("idx :%d | left %d | rigth %d\n", philos[i]->index, philos[i]->r_index,  philos[i]->l_index);
 		i++;
 	}
 }
@@ -87,8 +128,11 @@ int	main(int argc, char *argv[])
 	philos = ft_init_philos(&env);
 	if (!philos)
 		return (2);
-	// if (ft_dinner(&env, philos))
-	// 	ft_free(&env, philos);
-	// ft_init_or_destroy_philo_mutex(philos, env.amount_philos, 2);
-	// ft_free(&env, philos);
+	ft_print_forks_by_philo(env.amount_philos, philos);
+	if (ft_dinner(&env, philos))
+	{
+		printf("Error creating the threads or initialize/destroy mutex\n");
+		ft_free(&env, philos);
+	}
+	ft_free(&env, philos);
 }
