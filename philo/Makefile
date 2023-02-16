@@ -1,7 +1,6 @@
 NAME					=	philo
 CC						=	cc
 FLAGS					=	-Wall -Wextra -Werror -g
-# FLAGS					=	-g
 RM						=	rm -f
 
 # LIBRARY
@@ -13,22 +12,10 @@ HEADER = includes/
 SRC_PATH  = sources/
 LIBFT = libft/
 
-
-### Source Files ###
-COR_DIR		=	core/
-CORS		=	main.c parsing.c init.c routine.c error.c time.c free.c
-
-
-### Utils Files ###
-UTILS_DIR	=	utils/
-UTILS		=	ft_atoi_overflow.c ft_memcpy.c ft_calloc.c ft_bzero.c \
-				ft_isdigit.c \
-
 ### All sources ###
-SOURCES		+=	$(addprefix	$(COR_DIR),$(CORS))
-SOURCES		+=	$(addprefix	$(UTILS_DIR),$(UTILS))
+SOURCES		=	main.c parsing.c routine.c time_meals.c utils.c utils_libft.c
 
-### Objects ###
+### All objects ###
 
 SRCS = $(addprefix $(SRC_PATH),$(SOURCES))
 OBJS = $(addprefix $(OBJ_PATH),$(SOURCES:.c=.o))
@@ -43,8 +30,7 @@ all:	header tmp $(NAME)
 
 tmp:
 	@mkdir -p $(OBJ_PATH)
-	@mkdir -p $(OBJ_PATH)$(COR_DIR)
-	@mkdir -p $(OBJ_PATH)$(UTILS_DIR)
+	@mkdir -p $(OBJ_PATH) $(SRC_PATH)
 
 $(NAME) : $(OBJS)
 	$(CC) $(FLAGS) -o $@ $^ -l $(PTHREAD_LIB) -o $(NAME)

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/philo.h"
+#include "../includes/philo.h"
 
 static int	ft_check_numeric_args(char *str)
 {
@@ -32,30 +32,40 @@ static int	ft_check_args(int argc, char *args[])
 	int			i;
 
 	if (argc < 5 || argc > 6)
-		return (ft_error_args());
+	{
+		printf("Invalid use of the program.\n");
+		return (1);
+	}
 	i = 0;
 	while (i < (argc - 1))
 	{
 		if (ft_check_numeric_args(args[i]))
-			return (ft_error_args());
+		{
+			printf("Invalid use of the program.\n");
+			return (1);
+		}
 		check = ft_atoi_overflow(args[i]);
-		if (check > INT_MAX)
-			return (ft_error_args());
-		if (check <= 0)
-			return (ft_error_args());
+		if (check > INT_MAX || check <= 0)
+		{
+			printf("Invalid use of the program.\n");
+			return (1);
+		}
 		i++;
 	}
 	return (0);
 }
 
-static pthread_mutex_t *ft_init_mutex(int amt_philos)
+static pthread_mutex_t	*ft_init_mutex(int amt_philos)
 {
-	pthread_mutex_t *mutex_fork;
+	pthread_mutex_t	*mutex_fork;
 	int				i;
 
 	mutex_fork = ft_calloc(sizeof(pthread_mutex_t), amt_philos + 1);
 	if (!mutex_fork)
+	{
+		printf("Malloc failed.\n");
 		return (NULL);
+	}
 	i = 0;
 	while (i < amt_philos)
 	{
@@ -69,10 +79,12 @@ static int	*ft_get_forks(int amt_philos)
 {
 	int		*forks;
 
-	forks = ft_calloc(sizeof(int), amt_philos + 1);
+	forks = ft_calloc(sizeof(int), amt_philos);
 	if (!forks)
+	{
+		printf("Malloc failed.\n");
 		return (NULL);
-	forks[amt_philos] = -1;
+	}
 	return (forks);
 }
 
@@ -93,12 +105,11 @@ int	ft_init(t_env *env, int argc, char *args[])
 	env->forks = ft_get_forks(env->amount_philos);
 	if (!env->forks)
 		return (ft_error_malloc_failed());
-	env->mutex_fork = ft_init_mutex(env->amount_philos);
-	if (!env->mutex_fork)
+	env->mutex = ft_init_mutex(env->amount_philos);
+	if (!env->mutex)
 	{
 		free (env->forks);
 		return (ft_error_malloc_failed());
 	}
 	return (0);
 }
-
